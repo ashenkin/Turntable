@@ -39,7 +39,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 
 // pinout configuration for Teensy 2.0
-int stepPin = 19;
+int stepPin = 19; // aka Pulse
 int enblPin = 21;
 int dirPin = 20;
 int readoutPin = 17;
@@ -96,6 +96,10 @@ void run_motor(int doIO, unsigned int nSteps, unsigned int lhDelay, unsigned int
   }
 
   // run the motor
+
+  // With the HY-DIV268N-5A, you have to turn off the enable pin to drive the motor
+  digitalWrite(enblPin, LOW);
+  
   for (unsigned int i=0; i<nSteps; i++) {
     digitalWrite(stepPin, HIGH);
     delayMicroseconds(hlDelay);
@@ -120,6 +124,8 @@ void run_motor(int doIO, unsigned int nSteps, unsigned int lhDelay, unsigned int
       delayMicroseconds(lhDelay);
     }
   }
+
+  digitalWrite(enblPin, HIGH);
 
   if (doIO) {
     // measure
